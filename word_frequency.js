@@ -1,6 +1,9 @@
+//searching my at my computer directory to search for my txt file 
 const fs = require('fs')
 const path = require('path')
 const filePath = process.argv[2]
+
+
 
 const STOP_WORDS = [
   'a',
@@ -33,13 +36,36 @@ const STOP_WORDS = [
 function printWordFreq(file, callback) {
   // Read in `file` and print out the frequency of words in that file.
   fs.readFile(file, 'utf8', (err, data) => {
+    //placing words into their own arrays, removing punctuation, making lowercase
+    const array = data.toString().toLowerCase().split(/[(.?:,| )+\n]/);
+
+    // empty result
+const result = {};
+
+    //if the word is already found in result object, we increment count stating we have found another one
+    const newText = array.filter(val => !STOP_WORDS.includes(val));      
+    for (let word of newText) {
+      //if we recognize a Stop word, it should exclude it 
+
+      //if the word pops up, it is counted, otherwiseit is recognized as the first 
+      if (result[word]) {
+          result[word]++;
+      }
+      else {
+          result[word]=1;
+      }
+    }
+
+    // search space inside array and remove that index 
+
     if (err) {
       console.error('Error reading the file:', err)
       process.exit(1)
     }
-    // TODO: write code to count the words in the file
-    console.log('Initial data read from file: ', data)
-    callback('Your word count results should be passed in to this callback')
+
+    //  WORK RIGHT HERE //
+    //console.log('Initial data read from file: ', data)
+    callback(result);
   })
 }
 
